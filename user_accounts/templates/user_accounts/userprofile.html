@@ -1,0 +1,68 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<div class="container-xl px-4 mt-4">
+  <!-- Account page navigation-->
+  {% include 'user_accounts/profile_navi_bar.html' %}
+  <hr class="mt-0 mb-4" />
+
+  <div class="row">
+    <div class="col-xl-4">
+      <!-- Profile picture card-->
+      <div class="card shadow-sm mb-4 mb-xl-0">
+        <div class="card-header bg-primary text-white text-center">Profile Picture</div>
+        <div class="card-body text-center">
+          <!-- Profile picture image-->
+          <div style="width: 150px; height: 150px; overflow: hidden; border-radius: 50%; margin: 0 auto;">
+            <img
+              class="img-account-profile"
+              src="{{ userprofile.image.url }}"
+              alt="Profile Picture"
+              style="width: 100%; height: 100%; object-fit: cover"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-8">
+      <!-- Account details card-->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">Account Details</div>
+        <div class="card-body">
+          <div class="mb-2">
+            <strong>User Name:</strong> <span>{{ request.user.username }}</span>
+          </div>
+          <div class="mb-2">
+            <strong>Email:</strong> <span>{{ request.user.email }}</span>
+          </div>
+          <div class="mb-2">
+            <strong>First Name:</strong> <span>{{ request.user.first_name }}</span>
+          </div>
+          <div class="mb-2">
+            <strong>Last Name:</strong> <span>{{ request.user.last_name }}</span>
+          </div>
+          <div class="mb-2">
+            <strong>Phone:</strong> <span>{{ userprofile.phone }}</span>
+          </div>
+          <div class="mb-2">
+            <strong>Address 1:</strong> <span>{{ userprofile.address1 }}</span>
+          </div>
+          <div class="mb-2">
+            <strong>Address 2:</strong> <span>{{ userprofile.address2 }}</span>
+          </div>
+          <div class="mb-2">
+            <strong>City:</strong> <span>{{ userprofile.city }}</span>
+          </div>
+          <div class="mb-2">
+            <strong>State:</strong> <span>{{ userprofile.state }}</span>
+          </div>
+          <div class="mb-2">
+            <strong>Country:</strong> <span>{{ userprofile.country }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

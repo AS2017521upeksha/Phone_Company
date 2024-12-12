@@ -1,0 +1,39 @@
+{% extends 'store/base.html' %} {% load static %} {% block content %}
+
+<!-- Mashead header-->
+<header class="masthead">
+  <div class="container px-5">
+    <div class="row gx-5 align-items-center">
+      <div class="col-lg-6">
+        <!-- Mashead text and app badges-->
+        <div class="mb-5 mb-lg-0 text-center text-lg-start">
+        </br></br>
+          <h1 class="display-2 1h-1 mb-3">Welcome to Future Phoneshop.</h1>
+          <p class="lead fw-normal text-muted mb-5">
+            Please select a button to complte your user profile or start shopping!
+          </p>
+          <div class="d-flex flex-column flex-lg-row align-items-center">
+                {% if user.is_authenticated %}
+                <div class= 'center mt-3'> <a class="btn btn-lg btn-secondary" href = "{% url 'userprofile' %}" > Update profile</a></div>
+                {% endif %}
+                &nbsp;&nbsp;&nbsp;
+                <div class= 'center mt-3'> <a class="btn btn-lg btn-primary" href = "{% url 'shop' %}" > Go to Shop</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        </br></br>
+        <div class="row justify-content-center">
+        
+          <image
+            src="{% static 'assets/storehomeimage.png' %}"
+            style="width: 500px"
+          ></image>
+        </div>
+      </div>
+    </div>
+  </br></br>
+  </div>
+</header>
+
+{% endblock %}

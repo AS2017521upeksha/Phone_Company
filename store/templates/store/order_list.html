@@ -1,0 +1,70 @@
+{% extends 'store/base.html' %} 
+{% block content %}
+<div class="container-xl d-flex justify-content-center align-items-center mt-4">
+  <div class="col-xl-10">
+    <!-- Account page navigation-->
+    {% include 'user_accounts/profile_navi_bar.html' %}
+    <hr class="mt-0 mb-4" />
+    
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-primary text-white text-center">Order List</div>
+      <div class="card-body">
+        <!-- Display orders-->
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover align-middle">
+            <thead class="table-dark">
+              <tr>
+                <th>Order ID</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Payment Status</th>
+                <th>Details</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in orderlist %}
+              <tr>
+                <td>#{{ order.id }}</td>
+                <td>{{ order.date|date:"M d, Y" }}</td>
+                <td>${{ order.total|floatformat:2 }}</td>
+                <td>
+                  {% if order.status == 'unpaid' %}
+                  <span class="badge bg-warning text-dark">Unpaid</span>
+                  {% else %}
+                  <span class="badge bg-success">Paid</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <a class="btn btn-info btn-sm text-white" href="{% url 'order_details' order.id %}">
+                    View Order
+                  </a>
+                </td>
+                <td>
+                  {% if order.status == 'unpaid' %}
+                  <a class="btn btn-success btn-sm" href="{% url 'order_details' order.id %}">
+                    Pay Now
+                  </a>
+                  {% else %}
+                  <span class="text-muted">No Action</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="6" class="text-center">You don't have any orders yet.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Shop button -->
+        <div class="text-center mt-3">
+          <a class="btn btn-primary" href="{% url 'shop' %}">Continue Shopping</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

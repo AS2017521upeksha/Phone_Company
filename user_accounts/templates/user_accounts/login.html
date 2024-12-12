@@ -1,0 +1,27 @@
+{% extends 'store/base.html' %} {% block content %}
+<div class="container">
+  <div>
+    <center>
+      <div class="col-8">
+        <br />
+        <br />
+        <form method ="POST" action="{% url 'login_user' %}">
+          {%  csrf_token %}
+          <div class="mb-3">
+            <input type="text" class="form-control" name="username" placeholder="Enter Your Username"/>
+          </div>
+          <div class="mb-3">
+            <input type="password" class="form-control" name="password"placeholder="Enter your Password"/>
+          </div>
+          </div>
+          <br />
+          <button type="submit" class="btn btn-primary">Log in</button>
+          <a class="btn btn-secondary" href="{% url 'register_user' %}">Signup</a>
+          <br />
+          <br />
+        </form>
+      </div>
+    </center>
+  </div>
+</div>
+{% endblock %}

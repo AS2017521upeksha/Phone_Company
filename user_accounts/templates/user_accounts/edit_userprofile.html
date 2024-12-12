@@ -1,0 +1,139 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<div class="container-xl px-4 mt-4">
+  <!-- Account page navigation-->
+  {% include 'user_accounts/profile_navi_bar.html' %}
+  <hr class="mt-0 mb-4" />
+
+  <div class="row">
+    <div class="col-xl-4">
+      <!-- Profile picture card-->
+      <div class="card shadow-sm mb-4 mb-xl-0">
+        <div class="card-header bg-primary text-white text-center">Profile Picture</div>
+        <div class="card-body text-center">
+          <!-- Profile picture image with square container-->
+          <div style="width: 150px; height: 150px; overflow: hidden; border-radius: 50%; margin: 0 auto;">
+            <img
+              class="img-account-profile"
+              src="{{ userprofile.image.url }}"
+              alt="Profile picture"
+              style="width: 100%; height: 100%; object-fit: cover"
+            />
+          </div>
+          <!-- Profile picture help block-->
+          <div class="small font-italic text-muted mb-4">
+            JPG or PNG no larger than 5 MB
+          </div>
+          <!-- Profile picture upload form-->
+          <form method="POST" action="{% url 'edit_userprofile_image' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="image" class="form-control mb-2" required />
+            <button class="btn btn-primary" type="submit">Upload new image</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-8">
+      <!-- Account details card-->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">Account Details</div>
+        <div class="card-body">
+          <!-- Profile details form-->
+          <form method="POST" action="{% url 'edit_userprofile_details' %}">
+            {% csrf_token %}
+
+            <!-- Username (read-only) -->
+            <div class="mb-3">
+              <label class="small mb-1" for="inputUsername">Username (read only)</label>
+              <input
+                class="form-control-plaintext"
+                id="inputUsername"
+                type="text"
+                value="{{ request.user.username }}"
+                readonly
+              />
+            </div>
+
+            <!-- Form Row for Email and Phone -->
+            <div class="row gx-3 mb-3">
+              <div class="col-md-6">
+                <label class="small mb-1" for="inputEmail">Email</label>
+                <input class="form-control" id="inputEmail" type="email" name="email" value="{{ request.user.email }}" />
+              </div>
+              <div class="col-md-6">
+                <label class="small mb-1" for="inputPhone">Phone</label>
+                <input class="form-control" id="inputPhone" type="text" name="phone" value="{{ userprofile.phone }}" />
+              </div>
+            </div>
+
+            <!-- Form Row for First and Last Name -->
+            <div class="row gx-3 mb-3">
+              <div class="col-md-6">
+                <label class="small mb-1" for="inputFirstName">First name</label>
+                <input
+                  class="form-control"
+                  id="inputFirstName"
+                  type="text"
+                  name="first_name"
+                  value="{{ request.user.first_name }}"
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="small mb-1" for="inputLastName">Last name</label>
+                <input
+                  class="form-control"
+                  id="inputLastName"
+                  type="text"
+                  name="last_name"
+                  value="{{ request.user.last_name }}"
+                />
+              </div>
+            </div>
+
+            <!-- Form Row for Address -->
+            <div class="row gx-3 mb-3">
+              <div class="col-md-6">
+                <label class="small mb-1" for="inputAddress1">Address 1</label>
+                <input class="form-control" id="inputAddress1" type="text" name="address1" value="{{ userprofile.address1 }}" />
+              </div>
+              <div class="col-md-6">
+                <label class="small mb-1" for="inputAddress2">Address 2</label>
+                <input class="form-control" id="inputAddress2" type="text" name="address2" value="{{ userprofile.address2 }}" />
+              </div>
+            </div>
+
+            <!-- Form Row for City and State -->
+            <div class="row gx-3 mb-3">
+              <div class="col-md-6">
+                <label class="small mb-1" for="inputCity">City</label>
+                <input class="form-control" id="inputCity" type="text" name="city" value="{{ userprofile.city }}" />
+              </div>
+              <div class="col-md-6">
+                <label class="small mb-1" for="inputState">State</label>
+                <input class="form-control" id="inputState" type="text" name="state" value="{{ userprofile.state }}" />
+              </div>
+            </div>
+
+            <!-- Country and Zip Code -->
+            <div class="row gx-3 mb-3">
+              <div class="col-md-6">
+                <label class="small mb-1" for="inputCountry">Country</label>
+                <input class="form-control" id="inputCountry" type="text" name="country" value="{{ userprofile.country }}" />
+              </div>
+              <div class="col-md-6">
+                <label class="small mb-1" for="inputZipcode">Zip Code</label>
+                <input class="form-control" id="inputZipcode" type="text" name="zipcode" value="{{ userprofile.zipcode }}" />
+              </div>
+            </div>
+
+            <!-- Save changes button -->
+            <button class="btn btn-primary" type="submit">Save changes</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends 'store/base.html' %}
+{% load store_formula %}
+{% block content %}
+<br />
+
+{% if cart_items_count == 0 %}
+<div class="text-center">
+    <h3>Your cart is empty.</h3>
+    <h4>Go to shop, select a product to add to the cart</h4>
+    <a class="btn btn-primary mt-3" href="{% url 'shop' %}">Go to Shop</a><br /><br />
+</div>
+{% endif %}
+
+{% if cart_items_count > 0 %}
+<div class="container my-5">
+    <h2 class="text-center mb-4">Shopping Cart</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped text-center align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Product</th>
+                    <th>No of Units</th>
+                    <th>Unit Price</th>
+                    <th>Unit Total</th>
+                    <th>Image</th>
+                    <th>To Next Order</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>${{ item.product.sale_price }}</td>
+                    <td>${{ item.product.sale_price|multiply:item.quantity|floatformat:2 }}</td>
+                    <td>
+                        <img src="{{ item.product.image.url }}" alt="..." class="img-thumbnail" style="width: 50px;">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="purchase-{{ item.id }}" name="purchase"
+                            data-id="{{ item.id }}" {% if item.purchase %}checked{% endif %}
+                            onchange="togglePurchase(this)">
+                    </td>
+                    <td>
+                        <a class="btn btn-danger btn-sm" href="{% url 'remove_from_cart' item.id %}">
+                            Remove
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-end"><strong>Total Price:</strong></td>
+                    <td id="total-price" class="text-end"><strong>${{ total_price }}</strong></td>
+                    <td colspan="3" class="text-center">
+                        <a class="btn btn-outline-secondary" href="{% url 'shop' %}">Continue Shopping</a>
+                        <a class="btn btn-primary ms-2" href="{% url 'create_order' %}">
+                            Buy Selected Products
+                        </a>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function togglePurchase(checkbox) {
+        const isChecked = checkbox.checked;
+        const itemId = $(checkbox).data('id');
+
+        $.ajax({
+            url: 'update-purchase/',
+            type: 'POST',
+            data: {
+                'id': itemId,
+                'purchase': isChecked,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(response) {
+                console.log('Update successful:', response);
+                $('#total-price').text('$' + parseFloat(response.total_price).toFixed(2));
+            },
+            error: function(xhr, status, error) {
+                console.error('Update failed:', error);
+            }
+        });
+    }
+</script>
+{% endblock %}
